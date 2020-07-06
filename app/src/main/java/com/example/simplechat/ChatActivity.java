@@ -32,7 +32,7 @@ public class ChatActivity extends AppCompatActivity {
 
         // User login
         // Start with existing user if it exists
-        if (ParseUser.getCurrentUser() == null) {
+        if (ParseUser.getCurrentUser() != null) {
             startWithCurrentUser();
         } else {    // If not logged in, login as a new anonymous user
             login();
@@ -70,8 +70,8 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String data = etMessage.getText().toString();
                 ParseObject message = new ParseObject("message");
-                message.add(USER_ID_KEY, ParseUser.getCurrentUser().getObjectId());
-                message.add(BODY_KEY, data);
+                message.put(USER_ID_KEY, ParseUser.getCurrentUser().getObjectId());
+                message.put(BODY_KEY, data);
                 message.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
@@ -82,6 +82,7 @@ public class ChatActivity extends AppCompatActivity {
                         }
                     }
                 });
+                etMessage.setText(null);
             }
         });
     }
